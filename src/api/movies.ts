@@ -8,7 +8,6 @@ export interface Movie {
     overview: string;
 }
 
-
 export interface Detail{
     id: number;
     adult: boolean;
@@ -31,4 +30,9 @@ export async function getDetails( movie_id: string): Promise<Detail>{
     const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${apiKey}&language=es-ES`
     );
     return response.data;
+}
+
+export async function searchMovies( movieName: string): Promise<Movie[]>{
+    const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(movieName)}&language=es-ES`);
+    return response.data.results;
 }

@@ -7,15 +7,17 @@ type MovieCardProps = {
     movie: Movie;
 };
 
+
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 
     const {addFavorite, removeFavorite, isFavorite} = useFavorites();
     const favorite = isFavorite(movie.id.toString());
-
     const navigate = useNavigate();
+
     if (!movie.id) {
         return <div>Error: Película sin ID</div>;
     }
+
     return (
         <div onClick={() => navigate(`/movie/${movie.id}`)} className="cursor-pointer">
             <div className="relative bg-yellow-300 rounded-lg shadow-md p-4 flex flex-col items-center hover:scale-105 transition-transform">
