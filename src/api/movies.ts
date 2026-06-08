@@ -36,3 +36,5 @@ export async function searchMovies( movieName: string): Promise<Movie[]>{
     const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(movieName)}&language=es-ES`);
     return response.data.results;
 }
+
+// Lorena.Acosta.868

@@ -1,23 +1,30 @@
-import {useState} from "react";
+
+import { useState } from "react";
 import { useAuth } from "../features/auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [localError, setLocalError] = useState("");
+    const { login, error, loading, user } = useAuth();
+    const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const {login} = useAuth();
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email.includes("@")){
-            setError("El correo no es válido");
+        if (!email.includes("@")) {
+            setLocalError("El correo no es válido");
             return;
         }
-        setError("");
-        login(email);
-    }
+        setLocalError("");
+        await login({ email, password });
+    };
 
+    // Redirigir si ya está logueado
+    if (user) {
+        setTimeout(() => navigate("/"), 500);
+        return <div className="text-center py-10">¡Bienvenido, {user.name}! Redirigiendo...</div>;
+    }
 
     return (
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-white rounded shadow">
@@ -37,12 +44,18 @@ const Login = () => {
                 onChange={e => setPassword(e.target.value)}
                 required
             />
-            <button className="w-full bg-blue-600 text-white py-2 rounded" type="submit">
-                Iniciar sesión
+            {(localError || error) && (
+                <div className="text-red-600 text-sm mb-2">{localError || error}</div>
+            )}
+            <button
+                className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-60"
+                type="submit"
+                disabled={loading}
+            >
+                {loading ? "Iniciando sesión..." : "Iniciar sesión"}
             </button>
         </form>
-    )
-}
-
+    );
+};
 
 export default Login;

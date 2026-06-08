@@ -1,6 +1,7 @@
 import {useParams } from "react-router-dom";
 import {useEffect, useState} from "react";
 import {type Detail, getDetails} from "../api/movies.js";
+import GoBackBtn from "../components/GoBackBtn";
 
 const MovieDetails = () =>
 {
@@ -28,7 +29,9 @@ const MovieDetails = () =>
     if (!details) return null;
 
     return (
+
         <div className="max-w-xl mx-auto p-4 bg-white rounded shadow mt-8">
+            <GoBackBtn />
             <h2 className="text-2xl font-bold mb-4 text-center">{details.title}</h2>
             <img
                 src={`https://image.tmdb.org/t/p/w500${details.backdrop_path}`}
